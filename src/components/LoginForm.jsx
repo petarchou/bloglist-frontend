@@ -1,21 +1,34 @@
-import loginService from '../services/login'
 import { useState } from 'react'
+
+import Notification from './Notification'
+import loginService from '../services/login'
 
 const LoginForm = ({setUser}) => {
 
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
+    const [loginError, setLoginError] = useState(null)
 
     const handleLogin = async (e) => {
         e.preventDefault()
-        const loggedUser = await loginService.login({ username, password })
-        setUser(loggedUser)
-        setUsername('')
-        setPassword('')
+        try{
+
+            const loggedUser = await loginService.login({ username, password })
+            setUser(loggedUser)
+        } catch (error) {
+            setLoginError('Invalid Credentials')
+            setTimeout(() => {
+                setLoginError(null)
+            }, 5000)
+        } finally {
+            setUsername('')
+            setPassword('')
+        }
 
     }
 
     return (<div>
+        <Notification error={loginError}></Notification>
         <form onSubmit={handleLogin}>
             <div>
                 username
