@@ -11,6 +11,7 @@ const App = () => {
 
   useEffect(() => async () => {
       const returnedBlogs = await blogService.getAll()
+      returnedBlogs.sort((b1, b2) => b2.likesList.length - b1.likesList.length)
       setBlogs(returnedBlogs)
   }, [user])
 
