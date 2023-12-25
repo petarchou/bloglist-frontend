@@ -13,7 +13,7 @@ const App = () => {
       const returnedBlogs = await blogService.getAll()
       returnedBlogs.sort((b1, b2) => b2.likesList.length - b1.likesList.length)
       setBlogs(returnedBlogs)
-  }, [user])
+  }, [user, blogs])
 
   useEffect(() => {
     const userJson = window.localStorage.getItem('loggedUser')
@@ -55,11 +55,20 @@ const App = () => {
     return updated
   }
 
+  const deleteBlog = async (blogId) => {
+    const response = await blogService.remove(blogId)
+    console.log(response)
+    if(response.statusCode == 204) {
+      const newBlogs = blogs.filter(blog => blog.id != blogId)
+      setBlogs(newBlogs)
+    }
+  }
+
   const blogsList = () => {
     return (
       <div>
         {blogs.map(blog =>
-      <Blog id key={blog.id} blog={blog} user={user} updateBlog={updateBlog} />)}   
+      <Blog id key={blog.id} blog={blog} user={user} updateBlog={updateBlog} deleteBlog={deleteBlog} />)}   
       </div>
     )
     }
