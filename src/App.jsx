@@ -10,9 +10,9 @@ const App = () => {
   const [user, setUser] = useState(null)
 
   useEffect(() => async () => {
-      const returnedBlogs = await blogService.getAll()
-      returnedBlogs.sort((b1, b2) => b2.likesList.length - b1.likesList.length)
-      setBlogs(returnedBlogs)
+    const returnedBlogs = await blogService.getAll()
+    returnedBlogs.sort((b1, b2) => b2.likesList.length - b1.likesList.length)
+    setBlogs(returnedBlogs)
   }, [user, blogs])
 
   useEffect(() => {
@@ -46,10 +46,10 @@ const App = () => {
 
   const updateBlog = async (blogId, body) => {
     const updated = await blogService.update(blogId, body)
-    const blogIndex = blogs.findIndex(blog => blog.id === updated.id);
+    const blogIndex = blogs.findIndex(blog => blog.id === updated.id)
 
-    const updatedBlogs = [...blogs];
-    updatedBlogs[blogIndex] = { ...updated };
+    const updatedBlogs = [...blogs]
+    updatedBlogs[blogIndex] = { ...updated }
     setBlogs(updatedBlogs)
 
     return updated
@@ -58,8 +58,8 @@ const App = () => {
   const deleteBlog = async (blogId) => {
     const response = await blogService.remove(blogId)
     console.log(response)
-    if(response.statusCode == 204) {
-      const newBlogs = blogs.filter(blog => blog.id != blogId)
+    if (response.statusCode === 204) {
+      const newBlogs = blogs.filter(blog => blog.id !== blogId)
       setBlogs(newBlogs)
     }
   }
@@ -68,11 +68,11 @@ const App = () => {
     return (
       <div>
         {blogs.map(blog =>
-      <Blog id key={blog.id} blog={blog} user={user} updateBlog={updateBlog} deleteBlog={deleteBlog} />)}   
+          <Blog id key={blog.id} blog={blog} user={user} updateBlog={updateBlog} deleteBlog={deleteBlog} />)}
       </div>
     )
-    }
-    
+  }
+
 
   return (
     <div>
@@ -83,11 +83,11 @@ const App = () => {
       {user &&
         <div>
           <p>
-          welcome {user.name}
-          <button onClick={logout}>logout</button>
+            welcome {user.name}
+            <button onClick={logout}>logout</button>
           </p>
           <Togglable buttonLabel='create blog'>
-          <CreateBlogForm createBlog={createBlog}></CreateBlogForm>
+            <CreateBlogForm createBlog={createBlog}></CreateBlogForm>
           </Togglable>
           {blogsList()}
         </div>}

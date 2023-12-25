@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react"
-import Togglable from "./Togglable"
+import { useEffect, useState } from 'react'
+import Togglable from './Togglable'
 
 const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
 
@@ -7,15 +7,15 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
   const [likeLabel, setLikeLabel] = useState('')
 
   const hasLiked = () => blog.likesList
-  .filter(likedUser => likedUser.username == user.username)
-  .length > 0
+    .filter(likedUser => likedUser.username === user.username)
+    .length > 0
 
   useEffect(() => {
     setLikes(blog.likesList.length)
     setLikeLabel(
       hasLiked()
-      ? 'unlike'
-      : 'like'
+        ? 'unlike'
+        : 'like'
     )
   }, [])
 
@@ -36,11 +36,11 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
   }
 
   const remove = async () => {
-   const confirmed =  window.confirm(`Delete blog ${blog.title}?`)
+    const confirmed = window.confirm(`Delete blog ${blog.title}?`)
 
-   if (confirmed) {
-   await deleteBlog(blog.id)
-   }
+    if (confirmed) {
+      await deleteBlog(blog.id)
+    }
   }
 
   return (
@@ -53,8 +53,8 @@ const Blog = ({ blog, user, updateBlog, deleteBlog }) => {
           <button onClick={toggleLike}>{likeLabel}</button>
         </div>
         <div>User: {blog.user.name}</div>
-        {user.username == blog.user.username
-        && <button onClick={remove}>delete</button>}
+        {user.username === blog.user.username
+          && <button onClick={remove}>delete</button>}
       </Togglable>
     </div>
   )
