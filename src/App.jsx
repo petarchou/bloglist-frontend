@@ -38,20 +38,31 @@ const App = () => {
     window.location.reload()
   }
 
+  const createBlog = async (blogObject) => {
+    const createdBlog = await blogService.create(blogObject)
+    setBlogs(blogs.concat(createdBlog))
+  }
+
+  const updateBlog = async (blogId, body) => {
+    const updated = await blogService.update(blogId, body)
+    const blogIndex = blogs.findIndex(blog => blog.id === updated.id);
+
+    const updatedBlogs = [...blogs];
+    updatedBlogs[blogIndex] = { ...updated };
+    setBlogs(updatedBlogs)
+
+    return updated
+  }
+
   const blogsList = () => {
     return (
       <div>
         {blogs.map(blog =>
-      <Blog key={blog.id} blog={blog} />)}   
+      <Blog id key={blog.id} blog={blog} user={user} updateBlog={updateBlog} />)}   
       </div>
     )
     }
     
-    const createBlog = async (blogObject) => {
-      console.log(blogObject)
-      const createdBlog = await blogService.create(blogObject)
-      setBlogs(blogs.concat(createdBlog))
-    }
 
   return (
     <div>

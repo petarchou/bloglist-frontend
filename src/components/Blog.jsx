@@ -1,8 +1,44 @@
+import { useEffect, useState } from "react"
 import Togglable from "./Togglable"
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, user, updateBlog }) => {
 
-  // console.log(`blog ${blog.title} has user ${blog.user}`)
+  const [likes, setLikes] = useState(0)
+  const [likeLabel, setLikeLabel] = useState('')
+
+  const hasLiked = () => blog.likesList
+  .filter(likedUser => likedUser.username == user.username)
+  .length > 0
+
+  useEffect(() => {
+    setLikes(blog.likesList.length)
+    setLikeLabel(
+      hasLiked()
+      ? 'unlike'
+      : 'like'
+    )
+  }, [])
+
+
+
+
+
+
+  const toggleLike = async (e) => {
+    e.preventDefault()
+    const body = {}
+    body.like = hasLiked()
+      ? 0
+      : 1
+
+    blog = await updateBlog(blog.id, body)
+    setLikes(blog.likesList.length)
+    setLikeLabel(
+      hasLiked()
+        ? 'unlike'
+        : 'like'
+    )
+  }
 
   return (
     <div className="blog-container">
@@ -10,13 +46,13 @@ const Blog = ({ blog }) => {
       <Togglable buttonDisplay='inline' buttonLabel='view'>
         <div>URL: {blog.url}</div>
         <div>
-          <span>likes: {blog.likes}</span>
-          <button>like</button>
-          </div>
+          <span>likes: {likes}</span>
+          <button onClick={toggleLike}>{likeLabel}</button>
+        </div>
         <div>User: {blog.user.name}</div>
       </Togglable>
     </div>
   )
-} 
+}
 
 export default Blog
