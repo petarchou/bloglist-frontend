@@ -31,6 +31,13 @@ const App = () => {
     }
   }
 
+  const logout = (e) => {
+    e.preventDefault()
+    window.localStorage.removeItem('loggedUser')
+    blogService.setToken(null)
+    window.location.reload()
+  }
+
   const blogsList = () => {
     return (
       <div>
@@ -39,13 +46,12 @@ const App = () => {
       </div>
     )
     }
-
-  const logout = (e) => {
-    e.preventDefault()
-    window.localStorage.removeItem('loggedUser')
-    blogService.setToken(null)
-    window.location.reload()
-  }
+    
+    const createBlog = async (blogObject) => {
+      console.log(blogObject)
+      const createdBlog = await blogService.create(blogObject)
+      setBlogs(blogs.concat(createdBlog))
+    }
 
   return (
     <div>
@@ -60,7 +66,7 @@ const App = () => {
           <button onClick={logout}>logout</button>
           </p>
           <Togglable buttonLabel='create blog'>
-          <CreateBlogForm blogs={blogs} setBlogs={setBlogs}></CreateBlogForm>
+          <CreateBlogForm createBlog={createBlog}></CreateBlogForm>
           </Togglable>
           {blogsList()}
         </div>}

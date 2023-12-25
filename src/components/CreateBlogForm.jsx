@@ -1,16 +1,19 @@
 import { useState } from "react"
 
 import Notification from "./Notification"
-import blogService from '../services/blogs'
 
 
 
-const BlogForm = ({ setBlogs, blogs }) => {
+const BlogForm = ({ createBlog }) => {
 
     const [message, setMessage] = useState(null)
     const [error, setError] = useState(null)
+
+    const [title, setTitle] = useState('')
+    const [author, setAuthor] = useState('')
+    const [url, setUrl] = useState('')
     
-    const createBlog = async (e) => {
+    const addBlog = async (e) => {
         e.preventDefault()
         try {
 
@@ -20,19 +23,18 @@ const BlogForm = ({ setBlogs, blogs }) => {
                 author,
                 url
             }
-            const blog = await blogService.create(blogObject)
-            setBlogs([...blogs, blog])
 
-            const message = `A new blog '${blog.title}' by ${blog.author} was added!`
+            await createBlog(blogObject)
+
+            const message = `A new blog '${blogObject.title}' by ${blogObject.author} was added!`
 
             setMessage(message)
             setTimeout(()=> {
                 setMessage(null)
             }, 5000)
 
-            
-            //can include try-catch here and display some errors or success message
         } catch (error) {
+            console.log(error)
             setError('Missing fields or insufficient field length!')
             setTimeout(()=> {
                 setError(null)
@@ -44,14 +46,12 @@ const BlogForm = ({ setBlogs, blogs }) => {
         }
     }
 
-    const [title, setTitle] = useState('')
-    const [author, setAuthor] = useState('')
-    const [url, setUrl] = useState('')
+    
 
 
     return (<div>
         <Notification error={error} message={message}></Notification>
-        <form onSubmit={createBlog}>
+        <form onSubmit={addBlog}>
             <h3>Create new post</h3>
             <div>
                 title
