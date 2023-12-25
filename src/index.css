@@ -21,7 +21,9 @@
   }
 
   .blog-container {
-    border-style: solid;
+    padding-top: 10px;
+    padding-left: 2px;
+    border: solid;
     border-width: 2px;
     margin-bottom: 2px;
   }
