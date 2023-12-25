@@ -8,6 +8,10 @@ const Togglable = forwardRef((props, refs) => {
     const hideWhenVisible = { display: visible ? 'none' : '' }
     const showWhenVisible = { display: visible ? '' : 'none' }
 
+    const buttonDisplay = props.buttonDisplay
+
+    const isInline = buttonDisplay === 'inline'
+
 
     const toggleVisibility = () => {
         setVisible(!visible)
@@ -20,16 +24,23 @@ const Togglable = forwardRef((props, refs) => {
       })
 
     return (
-        <div>
-            <div>
+        <div style={{display: props.buttonDisplay}} >
+            <div style={{display: props.buttonDisplay}}>
             <button onClick={toggleVisibility} style={hideWhenVisible}>{props.buttonLabel}</button>
             </div>
+            {isInline && 
+            <div style={{display: props.buttonDisplay}}>
+            <button onClick={toggleVisibility} style={showWhenVisible}>cancel</button>
+            </div>
+            }
             <div style={showWhenVisible}>
                 {props.children}
             </div>
-            <div>
+            {!isInline && 
+            <div style={{display: props.buttonDisplay}}>
             <button onClick={toggleVisibility} style={showWhenVisible}>cancel</button>
             </div>
+            }
         </div>
     )
 
